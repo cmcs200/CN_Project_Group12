@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  database:
+    image: 'mongo'
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongo_data:/data/db
+      - ./yellow_tripdata_2016-03.csv:/home/data.csv
+    environment:
+      - MONGO_INITDB_DATABASE=taxi_db
+    container_name: 'mongo_taxi'
+  app:
+    build: .
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./app_data:/app
+    links:
+    - database

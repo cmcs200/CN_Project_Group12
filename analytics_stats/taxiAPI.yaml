@@ -1,0 +1,139 @@
+openapi: "3.0.2"
+info:
+  description: Swagger file for the NYC taxis business
+  version: "0.1.0"
+  title: Swagger NYC Taxis
+
+paths:
+  
+            
+  /provider/{p_id}/analytics/{c_name}:
+    get:
+      operationId: stats.continouousAnalytics
+      tags:
+        - Provider Analytics
+      summary: Busyness analytics about one provider dados continuos
+      description: Busyness analytics such as mean,mode,median,standard-deviation applied to the collumns chosen by the user (only continuous data).
+      parameters:
+        - name: p_id
+          in: path
+          description: "id of the provider"
+          schema:
+           type: integer
+          required: True
+        - name: c_name
+          in: path
+          description: name of the feature to analyse
+          schema:
+            type: string
+          required: True
+      responses:
+        '200':
+          description: Successfully analysis 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  f_name:
+                    type: string
+                  media:
+                    type: number
+                  mediana:
+                    type: number
+                  moda:
+                    type: number
+                  standard_deviation:
+                    type: object
+                  
+        400:
+          description: Bad request provider id must be an integer either 1 or 2.     
+        404:
+          description: The specified feature for analysis was not found 
+          
+  /provider/{p_id}/stats/{c_name}:
+    get:
+      operationId: stats.categoricalAnalytics
+      tags:
+        - Provider Analytics
+      summary: Busyness analytics about one provider for categorical data
+      description: Statistics such sum of the values
+      parameters:
+        - name: p_id
+          in: path
+          description: id of the provider
+          schema:
+            type: integer
+          required: True
+        - name: c_name
+          in: path
+          description: name of the feature to analyse
+          schema:
+            type: string
+          required: True
+      responses:
+        200:
+          description: Successfully analysis 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  c_name:
+                    type: string
+                  sum:
+                    type: number
+        400:
+          description: Bad request provider id must be an integer either 1 or 2.     
+        404:
+          description: The specified feature for analysis was not found 
+            
+  
+
+components:
+  schemas:
+  
+    Correlation:
+      title: Correlation
+      type: object
+      properties:
+        fstValue:
+          type: object
+          description: First value of correlation
+          example: 145.77000000000001
+        sndValue:
+          type: number
+          description: Second value of correlation
+          example: -16.920000000000002
+
+    Record:
+      title: Record
+      description: "The row of data set"
+      type: "object"
+      properties:
+        provider_id:
+          type: integer
+        p_up_datetime:
+          type: string
+          format: date-time
+        d_off_datetime:
+          type: string
+          format: date-time
+        passanger_count:
+          type: integer
+        trip_distance:
+          type: number
+        tariff_id:
+          type: integer
+        payment_type:
+          type: integer
+        fare_ammount:
+          type: number
+                    
+    Records:
+      title: Records
+      description: "A set of rows in the data set"
+      type: array
+      items:
+        $ref: '#/components/schemas/Record'
+  

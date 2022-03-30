@@ -1,0 +1,8 @@
+pandas
+flask 
+connexion
+datetime
+scikit-learn
+scipy
+pymongo
+flask_pymongo

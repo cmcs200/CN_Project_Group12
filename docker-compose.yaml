@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  database:
+    image: 'mongo'
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./database/mongo_data:/data/db
+      - ./database/yellow_tripdata_2016-03.csv:/home/data.csv
+    environment:
+      - MONGO_INITDB_DATABASE=taxi_db
+    container_name: 'mongo_taxi'
+    networks:
+      - microservices
+  provider:
+    build: ./provider
+    networks:
+      - microservices
+    ports:
+      - 5000:5000
+    container_name: 'server'
+  stats:
+    build: ./analytics_stats
+    networks:
+      - microservices
+    ports:
+      - 5001:5001
+    container_name: 'stats_service'
+  correlations:
+    build: ./correlations
+    networks:
+      - microservices
+    ports:
+      - 5002:5002
+    container_name: 'correlations'
+networks:
+  microservices:

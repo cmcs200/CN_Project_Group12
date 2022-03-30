@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  database:
+    image: 'mongo'
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./database/mongo_data:/data/db
+      - ./database/yellow_tripdata_2016-03.csv:/home/data.csv
+    environment:
+      - MONGO_INITDB_DATABASE=taxi_db
+    container_name: 'mongo_taxi'

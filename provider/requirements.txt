@@ -1,0 +1,5 @@
+pymongo
+connexion
+flask_pymongo
+pandas
+connexion[swagger-ui]

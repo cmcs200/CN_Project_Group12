@@ -1,0 +1,236 @@
+openapi: "3.0.2"
+info:
+  description: Swagger file for the NYC taxis business
+  version: "0.1.0"
+  title: Swagger NYC Taxis
+
+paths:
+  /provider:
+    get:
+      tags:
+      - Get Data 
+      summary: "Gets all records"
+      operationId: provider.get_all
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Records'
+                
+        "404":
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: Records not found
+                type: string
+                example: Not found
+      
+            
+  /provider/{c_name}:
+    get:
+      tags:
+      - Get Data
+      summary: "Gets records according to a condition"
+      operationId: provider.get_column
+      parameters:
+        - name: c_name
+          in: path
+          required: True
+          description: The name of the column
+          schema:
+            type: string
+        - name: cond
+          in: query
+          required: True
+          description: The condition wanted (c_name==cond)
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Records'
+        "404":
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: Records not found
+                type: string
+                example: Not found
+    delete: 
+      tags:
+      - Delete Data 
+      summary: "It deletes all records that have the same condition"
+      operationId: provider.del_column
+      parameters:
+        - name: c_name
+          in: path
+          required: True
+          description: The name of the column
+          schema:
+            type: string
+        - name: cond
+          in: query
+          required: True
+          description: The condition wanted 
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Records Deleted
+        "404":
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: Records not found
+                type: string
+                example: Not found
+                
+  /provider/pickUpDateTime/{start}/dropOffDateTime/{end}:
+    get:
+      tags:
+      - Get Data
+      summary: "Gets records according to dateTime interval"
+      operationId: provider.get_DateTime
+      parameters:
+        - name: start
+          in: path
+          required: True
+          description: "The time interval wanted-- format: YYYY/MM/DD-HH:MM"
+          schema:
+            type: string
+        - name: end
+          in: path
+          required: True
+          description: "The time interval wanted-- format: YYYY/MM/DD HH:MM"
+          schema:
+            type: string
+       
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Records'
+        "404":
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: Records not found
+                type: string
+                example: Not found
+    delete: 
+      tags:
+      - Delete Data 
+      summary: "Deletes records if they are in the DateTime interval"
+      operationId: provider.del_DateTime
+      parameters:
+        - name: start
+          in: path
+          required: True
+          description: "The time interval wanted-- format: YYYY/MM/DD-HH:MM_YYYY/MM/DD-HH:MM"
+          schema:
+            type: string
+        - name: end
+          in: path
+          required: True
+          description: "The time interval wanted-- format: YYYY/MM/DD-HH:MM_YYYY/MM/DD-HH:MM"
+          schema:
+            type: string
+        
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                title: Records Deleted
+        "404":
+          description: Not found response
+          content:
+            text/plain:
+              schema:
+                title: Records not found
+                type: string
+                example: Not found
+                
+  /provider/{record}:
+    post:
+        tags:
+        - Post Data
+        summary: "Creates a record and inserts it in the dataset"
+        operationId: provider.add_record
+        parameters:
+          - name: record
+            in: path
+            required: True
+            description: "add record"
+            schema:
+              $ref: '#/components/schemas/Record'
+        responses:
+          "201":
+            description: Record added
+          default:
+            description: unexpected error
+ 
+components:
+  schemas:
+  
+    Correlation:
+      title: Correlation
+      type: object
+      properties:
+        fstValue:
+          type: object
+          description: First value of correlation
+          example: 145.77000000000001
+        sndValue:
+          type: number
+          description: Second value of correlation
+          example: -16.920000000000002
+
+    Record:
+      title: Record
+      description: "The row of data set"
+      type: "object"
+      properties:
+        provider_id:
+          type: integer
+        p_up_datetime:
+          type: string
+          format: date-time
+        d_off_datetime:
+          type: string
+          format: date-time
+        passanger_count:
+          type: integer
+        trip_distance:
+          type: number
+        tariff_id:
+          type: integer
+        payment_type:
+          type: integer
+        fare_ammount:
+          type: number
+                    
+    Records:
+      title: Records
+      description: "A set of rows in the data set"
+      type: array
+      items:
+        $ref: '#/components/schemas/Record'
+  
+

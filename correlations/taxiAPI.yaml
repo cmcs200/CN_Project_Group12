@@ -1,0 +1,252 @@
+openapi: "3.0.2"
+info:
+  description: Swagger file for the NYC taxis business
+  version: "0.1.0"
+  title: Swagger NYC Taxis
+
+paths:
+  /correlations/dateTime_distance:
+    get:
+      operationId: correlations.correlation_dateTime_distance
+      tags:
+        - Correlation Analysis
+      summary: "Get the result of a correlation analysis: datetime_distance" 
+      description: "Get the result of a correlation analysis between #tpep_pickup_datetime vs #trip_distance columns from the dataset."
+      responses:
+        "200":
+          description: Successful response, the first value should be a DateTime and the second value the average distance at that hour.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/paymentType_tip:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Establish the level of correlation between Payment Type and Tip"
+      description: "For each payment type retrieves the average  tip amount in dollars"
+      operationId: correlations.correlation_payment_type_tip
+      responses:
+        "200":
+          description: Successful response, the first value should be a payment type and the second value the correspondant tip value.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/paymentType_totalAmmount:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Establish the level of correlation between Payment Type and Payment Amount"
+      description: "For each payment type retrieves the average  payment amount in dollars"
+      operationId: correlations.correlation_payment_type_total_amount
+      responses:
+        "200":
+          description: Successful response, the first value should be a payment type and the second value the average amount of that payment.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/dateTime_paymentType:
+    get:
+      operationId: correlations.correlation_dateTime_payment_type
+      tags:
+      - Correlation Analysis
+      summary: "Get the result of a correlation analysis: dateTime_paymentType"
+      description: "Get the result of a correlation analysis: between #tpep_pickup_datetime vs #payment_type from the dataset."
+      responses:
+        "200":
+          description: Successful response, the first value should be a DateTime and the second value the most used payment type at that hour.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/totalAmmount_tip:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Get the result of a correlation analysis: tip_totalAmmount"
+      description: "Get the result of a correlation analysis between #tip_amount vs #total_amount columns from the dataset."
+      operationId: correlations.correlation_totalAmmount_tip
+      responses:
+        "200":
+          description: Successful response, the first value should be the total ammount and the second value the average tip for that amount.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/tripDistance_tip:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Establish the level of correlation between Trip Distance and Tip"
+      description: "Gives a list of trip distance normal values and the average/predicted tip amount in dollars"
+      operationId: correlations.correlation_tripDistance_tip
+      responses:
+        "200":
+          description: Successful response, the first value should be an example of trip distance and the second value the correspondant tip value.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+
+components:
+  schemas:
+  
+    Correlation:
+      title: Correlation
+      type: object
+      properties:
+        fstValue:
+          type: object
+          description: First value of correlation
+          example: 145.77000000000001
+        sndValue:
+          type: number
+          description: Second value of correlation
+          example: -16.920000000000002
+
+    Record:
+      title: Record
+      description: "The row of data set"
+      type: "object"
+      properties:
+        provider_id:
+          type: integer
+        p_up_datetime:
+          type: string
+          format: date-time
+        d_off_datetime:
+          type: string
+          format: date-time
+        passanger_count:
+          type: integer
+        trip_distance:
+          type: number
+        tariff_id:
+          type: integer
+        payment_type:
+          type: integer
+        fare_ammount:
+          type: number
+                    
+    Records:
+      title: Records
+      description: "A set of rows in the data set"
+      type: array
+      items:
+        $ref: '#/components/schemas/Record'
+  
