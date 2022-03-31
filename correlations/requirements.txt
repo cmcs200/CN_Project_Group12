@@ -6,3 +6,4 @@ scikit-learn
 scipy
 pymongo
 flask_pymongo
+connexion[swagger-ui]
