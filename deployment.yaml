@@ -1,0 +1,152 @@
+#error: error validating "deployment.yaml": error validating data: ValidationError(Service.spec.ports[0]): 
+#missing required field "port" in io.k8s.api.core.v1.ServicePort; 
+#if you choose to ignore these errors, turn validation off with --validate=false
+
+# nao houve problemas com o mongo-taxi:
+# deployment.apps/mongo-taxi unchanged
+
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "mongo-taxi"
+spec:
+  #strategy:
+  #  type: Recreate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "mongo"
+  template:
+    metadata:
+      labels:
+        app: "mongo"
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: "mongo-taxi"
+        image: "mongo:latest"
+        ports:
+        - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-taxi
+spec:
+  selector:
+      app: mongo
+  ports:
+  - name: localhost
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "server"
+spec:
+  #strategy:
+  #  type: Recreate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "cn_project_group12_provider"
+  template:
+    metadata:
+      labels:
+        app: "cn_project_group12_provider"
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: "server"
+        image: "cn_project_group12_provider:latest"
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+spec:
+  selector:
+      app: cn_project_group12_provider
+  ports:
+  - name: localhost
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "stats_service"
+spec:
+  #strategy:
+  #  type: Recreate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "cn_project_group12_stats"
+  template:
+    metadata:
+      labels:
+        app: "cn_project_group12_stats"
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: "stats_service"
+        image: "cn_project_group12_stats"
+        ports:
+        - containerPort: 5001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stats_service
+spec:
+  selector:
+      app: "cn_project_group12_stats"
+  ports:
+  - name: localhost
+  - protocol: TCP
+    port: 5001
+    targetPort: 5001
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "correlations"
+spec:
+  #strategy:
+  #  type: Recreate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "cn_project_group12_correlations"
+  template:
+    metadata:
+      labels:
+        app: "cn_project_group12_correlations"
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: "correlations"
+        image: "cn_project_group12_correlations"
+        ports:
+        - containerPort: 5002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: correlations
+spec:
+  selector:
+      app: "cn_project_group12_correlations"
+  ports:
+  - name: localhost
+  - protocol: TCP
+    port: 5002
+    targetPort: 5002
+---
