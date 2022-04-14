@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+
+message ClientRequest {
+	repeated string request=1;
+}
+
+
+message ClientResponse {
+    string response=1;
+}
+
+service ClientProviderRequest {
+    rpc DBMakeRequest (ClientRequest) returns (ClientResponse);
+}
