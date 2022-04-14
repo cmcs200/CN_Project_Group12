@@ -1,18 +1,10 @@
-#error: error validating "deployment.yaml": error validating data: ValidationError(Service.spec.ports[0]): 
-#missing required field "port" in io.k8s.api.core.v1.ServicePort; 
-#if you choose to ignore these errors, turn validation off with --validate=false
-
-# nao houve problemas com o mongo-taxi:
-# deployment.apps/mongo-taxi unchanged
-
----
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: "mongo-taxi"
+  name: "mongo"
 spec:
-  #strategy:
-  #  type: Recreate
+  strategy:
+    type: Recreate
   replicas: 3
   selector:
     matchLabels:
@@ -24,7 +16,7 @@ spec:
     spec:
       serviceAccountName: default
       containers:
-      - name: "mongo-taxi"
+      - name: "mongo"
         image: "mongo:latest"
         ports:
         - containerPort: 27017
@@ -32,121 +24,301 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-taxi
+  name: mongo-s
+  labels:
+    app: mongo
 spec:
+  type: NodePort
   selector:
-      app: mongo
+      app: nginx
   ports:
-  - name: localhost
-  - protocol: TCP
-    port: 27017
-    targetPort: 27017
+    - name: http
+      protocol: TCP
+      port: 27017
+      nodePort: 30000
+      targetPort: 27017
 ---
-apiVersion: "apps/v1"
-kind: "Deployment"
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: "server"
+  name: provider 
+  labels:
+    app: provider
 spec:
-  #strategy:
-  #  type: Recreate
+  strategy:
+    type: Recreate
   replicas: 3
   selector:
     matchLabels:
-      app: "cn_project_group12_provider"
+      app: provider
   template:
     metadata:
       labels:
-        app: "cn_project_group12_provider"
+        app: provider
     spec:
-      serviceAccountName: default
       containers:
-      - name: "server"
-        image: "cn_project_group12_provider:latest"
+      - name: provider
+        image: ray2g/provider:latest
         ports:
         - containerPort: 5000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: server
+  name: provider-s
+  labels:
+    app: provider
 spec:
+  type: NodePort
   selector:
-      app: cn_project_group12_provider
+      app: nginx
   ports:
-  - name: localhost
-  - protocol: TCP
-    port: 5000
-    targetPort: 5000
+    - name: http
+      protocol: TCP
+      port: 5000
+      nodePort: 30001
+      targetPort: 5000
 ---
-apiVersion: "apps/v1"
-kind: "Deployment"
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: "stats_service"
+  name: stats 
+  labels:
+    app: stats
 spec:
-  #strategy:
-  #  type: Recreate
+  strategy:
+    type: Recreate
   replicas: 3
   selector:
     matchLabels:
-      app: "cn_project_group12_stats"
+      app: stats
   template:
     metadata:
       labels:
-        app: "cn_project_group12_stats"
+        app: stats
     spec:
-      serviceAccountName: default
       containers:
-      - name: "stats_service"
-        image: "cn_project_group12_stats"
+      - name: stats
+        image: ray2g/stats:latest
         ports:
         - containerPort: 5001
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: stats_service
+  name: stats-s
+  labels:
+    app: stats
 spec:
+  type: NodePort
   selector:
-      app: "cn_project_group12_stats"
+      app: nginx
   ports:
-  - name: localhost
-  - protocol: TCP
-    port: 5001
-    targetPort: 5001
+    - name: http
+      protocol: TCP
+      port: 5001
+      nodePort: 30002
+      targetPort: 5001
 ---
-apiVersion: "apps/v1"
-kind: "Deployment"
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: "correlations"
+  name: correlations 
+  labels:
+    app: correlations
 spec:
-  #strategy:
-  #  type: Recreate
+  strategy:
+    type: Recreate
   replicas: 3
   selector:
     matchLabels:
-      app: "cn_project_group12_correlations"
+      app: correlations
   template:
     metadata:
       labels:
-        app: "cn_project_group12_correlations"
+        app: correlations
     spec:
-      serviceAccountName: default
       containers:
-      - name: "correlations"
-        image: "cn_project_group12_correlations"
+      - name: correlations
+        image: ray2g/correlations:latest
         ports:
         - containerPort: 5002
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: correlations
+  name: correlations-s
+  labels:
+    app: correlations
 spec:
+  type: NodePort
   selector:
-      app: "cn_project_group12_correlations"
+      app: nginx
   ports:
-  - name: localhost
-  - protocol: TCP
-    port: 5002
-    targetPort: 5002
+    - name: http
+      protocol: TCP
+      port: 5002
+      nodePort: 30003
+      targetPort: 5002
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: nginx-s-c
+      port:
+        number: 80
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-s-c
+            port:
+              number: 80
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mongo-hpa
+  namespace: default
+  labels:
+    app: mongo
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mongo
+  minReplicas: 1
+  maxReplicas: 399
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 300Mi
+    - type: Pods
+      pods:
+        metric:
+          name: packets-per-second
+        target:
+          type: AverageValue
+          averageValue: 200
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: provider-hpa
+  namespace: default
+  labels:
+    app: provider
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: provider
+  minReplicas: 1
+  maxReplicas: 399
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 300Mi
+    - type: Pods
+      pods:
+        metric:
+          name: packets-per-second
+        target:
+          type: AverageValue
+          averageValue: 200
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: stats-hpa
+  namespace: default
+  labels:
+    app: stats
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: stats
+  minReplicas: 1
+  maxReplicas: 399
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 300Mi
+    - type: Pods
+      pods:
+        metric:
+          name: packets-per-second
+        target:
+          type: AverageValue
+          averageValue: 200
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: correlations-hpa
+  namespace: default
+  labels:
+    app: correlations
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: correlations
+  minReplicas: 1
+  maxReplicas: 399
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: AverageValue
+          averageValue: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 300Mi
+    - type: Pods
+      pods:
+        metric:
+          name: packets-per-second
+        target:
+          type: AverageValue
+          averageValue: 200
