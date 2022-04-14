@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    image: 'mongo'
+    image: mongo
     ports:
       - '27017:27017'
     volumes:
@@ -13,6 +13,15 @@ services:
     container_name: 'mongo_taxi'
     networks:
       - microservices
+  mongo_seed:
+    image: mongo
+    networks:
+      - microservices
+    volumes:
+      - ./database/import.sh:/home/import.sh
+      - ./database/yellow_tripdata_2016-03.csv:/home/data.csv
+    restart: "no"
+    command: ["/bin/sh", "/home/import.sh"]
   provider:
     build: ./provider
     networks:

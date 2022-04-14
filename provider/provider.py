@@ -1,19 +1,24 @@
 from dataclasses import replace
+import string
 from config import db
 import pymongo
 import os
 import connexion
 import config 
 import json
+import messages_pb2
+import messages_pb2_grpc 
 from bson import json_util
 from flask_pymongo import PyMongo
 from flask import request
 from datetime import datetime
 
+
+
 #request:http://localhost:5000/provider/
 def get_all():
 	output = []
-	taxis = db.taxis.find({}).limit(50)
+	taxis = db.taxis.find({})
 	for i in taxis:
 		output.append(i)
 
@@ -87,5 +92,14 @@ def add_record(record):
 		#db.taxis.insert_one(record)
 		#return json.loads(json_util.dumps("Record was added.")), 201
 	return json.loads(json_util.dumps("Request was unsuccessful"))
+
+class ColumnsServicer(messages_pb2_grpc.ClientProviderRequestServicer):
+	def DBMakeRequest(self, request, context):
+		columns=request.request
+		colsDict={}
+		for col in columns:
+			colsDict[col]=1
+		return messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000))))
+
 
  
