@@ -1,6 +1,4 @@
-![alt text](https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png)
-
-<img src="https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png" width="100" height="50">
+<img src="https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png" width="200" height="100">
 
 # CN_Project
 Command to run: 
