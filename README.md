@@ -41,7 +41,7 @@ Use the secret token that is on `kubernetes_deployment/secret_token.txt` to logi
 <br>
 
 Promotheus is accessible on : 
- * `https://localhost:31518/targets'
+ * https://localhost:31518/targets
 
 <br>
 
