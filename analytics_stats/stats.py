@@ -5,9 +5,15 @@ import json
 from datetime import datetime #jr: add
 from sklearn.preprocessing import LabelEncoder #jr: add
 from scipy.stats import f_oneway #jr: add
-from config import db
 import statistics
 import numpy as np
+from messages_pb2 import ClientRequest
+from messages_pb2_grpc import ClientProviderRequestStub
+import grpc
+
+messages_channel = grpc.insecure_channel("provider-s:50051")
+messages_client = ClientProviderRequestStub(messages_channel)
+
 
 
 def health():
@@ -69,7 +75,6 @@ def categoricalAnalytics(p_id,c_name):
         return json.dumps(dictionary),200
     pass
 
-
 def callDB(column):
-	return pd.DataFrame(list(db.taxis.find({},{"VendorID":1,column:1}).limit(50))) #might need to use .limit() if it crashes
-
+    listDB=json.loads(messages_client.DBMakeRequest(ClientRequest(request=["VendorID",column])).response)
+    return pd.DataFrame(listDB)

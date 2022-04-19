@@ -3,6 +3,6 @@ WORKDIR /correlations
 COPY requirements.txt /correlations
 RUN pip install -r requirements.txt
 COPY . /correlations
-EXPOSE 5002
+EXPOSE 8080
 ENTRYPOINT ["python"]
 CMD ["server.py"]

@@ -3,3 +3,6 @@ connexion
 flask_pymongo
 pandas
 connexion[swagger-ui]
+grpcio
+grpcio-tools
+grpc_interceptor

@@ -1,11 +1,10 @@
 import config 
-import json
-from flask_pymongo import PyMongo
-from config import db
-from flask import Response
-from bson import json_util
-import pandas as pd
 import provider
+import grpc
+from grpc_interceptor import ExceptionToStatusInterceptor
+from concurrent import futures
+import messages_pb2_grpc
+import threading
 
 connex_app = config.connex_app
 
@@ -21,5 +20,28 @@ connex_app.route("/provider/{record}", methods=["POST"])
 
 connex_app.route("/health",methods=["GET"])
 
+def serve():
+	interceptors = [ExceptionToStatusInterceptor()]
+	server = grpc.server(
+        futures.ThreadPoolExecutor(max_workers=10), interceptors=interceptors
+    )
+	messages_pb2_grpc.add_ClientProviderRequestServicer_to_server(
+        provider.ColumnsServicer(), server
+    )
+	server.add_insecure_port("0.0.0.0:50051")
+	server.start()
+	server.wait_for_termination()
+
+def run_clientAPI():
+	connex_app.run(debug=True, host='0.0.0.0', port=8080,use_reloader=False)
+
 if __name__ == '__main__':
-	connex_app.run(debug=True, host='0.0.0.0',use_reloader=False)
+	try:
+		serverT=threading.Thread(target=serve)
+		clientAPIT=threading.Thread(target=run_clientAPI)
+		serverT.start()
+		clientAPIT.start()
+		serverT.join()
+		clientAPIT.join()
+	except:
+		print("Error: unable to start thread")
