@@ -11,7 +11,7 @@ kubectl apply -f kubernetes_deployment/prometheus.yaml
 kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
 kubectl create serviceaccount dashboard-admin-sa 
 kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:dashboard-admin-sa
-kubectl get secret $(kubectl get serviceaccount dashboard-admin-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode > secret_token.txt
+kubectl get secret $(kubectl get serviceaccount dashboard-admin-sa -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode > kubernetes_deployment/secret_token.txt
 
 # configure the services in kubernetes
 kubectl apply -f kubernetes_deployment/rbac.yaml --record
