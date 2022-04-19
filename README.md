@@ -1,4 +1,4 @@
-![alt text](https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png)
+![alt text](https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png | width=100 | height=50)
 
 # CN_Project
 Command to run: 
