@@ -17,13 +17,13 @@ kubectl get secret $(kubectl get serviceaccount dashboard-admin-sa -o jsonpath="
 kubectl apply -f kubernetes_deployment/rbac.yaml --record
 kubectl apply -f kubernetes_deployment/mongo-secret.yaml --record
 kubectl apply -f kubernetes_deployment/persist-vol.yaml --record
-sleep 120
+sleep 30
 kubectl apply -f kubernetes_deployment/pv-claim.yaml --record
-sleep 120
+sleep 30
 kubectl apply -f kubernetes_deployment/deployment_DB.yaml --record
-sleep 120
+sleep 30
 kubectl apply -f kubernetes_deployment/deployment_provider.yaml --record
-sleep 120
+sleep 30
 kubectl apply -f kubernetes_deployment/deployment_Analysis.yaml --record
 kubectl apply -f kubernetes_deployment/ingress.yaml --record
 
