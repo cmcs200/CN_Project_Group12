@@ -1,6 +1,14 @@
 <img src="https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png" width="250" height="130">
 
-# CN_Project
+# Cloud Computing Final Project
+
+ * Cristiano Santos
+ * João Raimundo
+ * João Rato
+<!--  -->
+In this checkpoint of the implementation, each microservice is deployed in a docker container. gRPC were implemented to insure the communication between microservices.
+Addicionally, all the containers are orchestrated in Kubernetes. 
+
 Command to run: 
 docker-compose up
 
