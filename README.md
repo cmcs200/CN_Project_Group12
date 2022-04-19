@@ -1,3 +1,5 @@
+![alt text](https://ciencias.ulisboa.pt/sites/default/files/Ciencias_Logo_Azul-01.png)
+
 # CN_Project
 Command to run: 
 docker-compose up
