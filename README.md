@@ -12,6 +12,8 @@
 In this checkpoint of the implementation, each microservice is deployed in a docker container. gRPC were implemented to insure the communication between microservices.
 Addicionally, all the containers are orchestrated in Kubernetes. 
 
+<br>
+
 ### How to deploy: 
 
 To set and configure Kubernetes with the microservices containers orchestrated run the command:
@@ -20,15 +22,26 @@ To set and configure Kubernetes with the microservices containers orchestrated r
 $ ./deploy_kubernetes.sh
 ```
 
+<br>
 
+### Kubernetes-Dashboard: 
 
+<br>
 
-Command to run: 
-docker-compose up
+Kubernetes-Dashboard is accessible on : 
 
-on a different cmd populate db with 2 commands:
-docker exec -it CONTAINER_ID /bin/bash
-mongoimport --db taxisdb --collection taxis --type csv --file home/data.csv --headerline
+ * http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 
-csv in database folder is incomplete for test purposes.
-to get the full csv file get it on https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data?resource=download&select=yellow_tripdata_2016-03.csv
+Use the secret token that is on `kubernetes_deployment/secret_token.txt` to login into the dashboard.
+
+<br>
+
+### Promotheus: 
+
+<br>
+
+Promotheus is accessible on : 
+ * `https://localhost:31518/targets'
+
+<br>
+
