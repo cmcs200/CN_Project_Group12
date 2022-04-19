@@ -7,5 +7,5 @@ ENV FLASK_RUN_HOST=0.0.0.0
 COPY . .
 RUN pip install -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 8080
 CMD ["python","server.py"]

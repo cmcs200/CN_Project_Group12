@@ -1,19 +1,17 @@
 # import libraries
-from pyexpat.errors import messages
 from numpy import around
 import pandas as pd
 from flask import render_template
-import grpc
+import connexion
 import json
 from datetime import datetime 
 from sklearn.preprocessing import LabelEncoder
 from scipy.stats import f_oneway
-from messages_pb2 import ClientRequest
-from messages_pb2_grpc import ClientProviderRequestStub
+from config import db
 
-messages_channel = grpc.insecure_channel("server:50051")
-messages_client = ClientProviderRequestStub(messages_channel)
 
+def health():
+	return 200
 
 # function to get a proper answer depending on the p-value
 def getPValueAnswer(p_value,var1,var2):
@@ -162,6 +160,5 @@ def correlation_tripDistance_tip():
 
 
 def callDB(column1,column2):
-    listDB=json.loads(messages_client.DBMakeRequest(ClientRequest(request=[column1,column2])).response)
-    return pd.DataFrame(listDB)
+	return pd.DataFrame(list(db.taxis.find({},{column1:1,column2:1}).limit(50)))
 

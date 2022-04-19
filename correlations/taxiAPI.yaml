@@ -5,6 +5,18 @@ info:
   title: Swagger NYC Taxis
 
 paths:
+  /health:
+    get:
+      tags:
+      - health
+      summary: "get health"
+      operationId: correlations.health
+      responses:
+        "200":
+          description: Successful response                
+        "404":
+          description: Not found response  
+
   /correlations/dateTime_distance:
     get:
       operationId: correlations.correlation_dateTime_distance

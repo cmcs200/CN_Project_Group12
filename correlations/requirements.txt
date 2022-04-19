@@ -6,7 +6,4 @@ scikit-learn
 scipy
 pymongo
 flask_pymongo
-grpcio
-grpcio-tools
-grpc_interceptor
-
+connexion[swagger-ui]

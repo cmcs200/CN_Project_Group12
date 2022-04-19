@@ -5,7 +5,17 @@ info:
   title: Swagger NYC Taxis
 
 paths:
-  
+  /health:
+    get:
+      tags:
+      - health
+      summary: "get health"
+      operationId: stats.health
+      responses:
+        "200":
+          description: Successful response                
+        "404":
+          description: Not found response  
             
   /provider/{p_id}/analytics/{c_name}:
     get:

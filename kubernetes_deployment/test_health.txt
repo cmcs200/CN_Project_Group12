@@ -1,0 +1,2 @@
+# test liveness with provider service
+kubectl.exe port-forward svc/provider-s 8080:8080

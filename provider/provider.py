@@ -13,7 +13,8 @@ from flask_pymongo import PyMongo
 from flask import request
 from datetime import datetime
 
-
+def health():
+	return 200
 
 #request:http://localhost:5000/provider/
 def get_all():
