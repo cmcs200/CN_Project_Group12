@@ -39,8 +39,6 @@ Then, you can start using the services, like on this example, replacing the addr
 
 ### Kubernetes-Dashboard: 
 
-<br>
-
 Kubernetes-Dashboard is accessible on : 
 
  * http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
@@ -50,8 +48,6 @@ Use the secret token that is on `kubernetes_deployment/secret_token.txt` to logi
 <br>
 
 ### Prometheus: 
-
-<br>
 
 Prometheus is accessible on : 
  * http://localhost:8080/targets
