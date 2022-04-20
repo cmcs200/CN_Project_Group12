@@ -45,3 +45,11 @@ Prometheus is accessible on :
 
 <br>
 
+In order to access the services through a curl, an address is needed. You can get it by executing the following command:
+
+```
+kubectl describe ingress | grep -Po 'Address:\s\K.*' | tr -d " \t\r"
+```
+Then, you can start using the services, like on this example, replacing the address on this link:
+
+ * http://{address}/correlations/dateTime_distance
