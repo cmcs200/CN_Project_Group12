@@ -41,7 +41,7 @@ Use the secret token that is on `kubernetes_deployment/secret_token.txt` to logi
 <br>
 
 Prometheus is accessible on : 
- * http://localhost:31218/targets
+ * http://localhost:8080/targets
 
 <br>
 
