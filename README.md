@@ -45,6 +45,8 @@ Prometheus is accessible on :
 
 <br>
 
+### How to access the services: 
+
 In order to access the services through a curl, an address is needed. You can get it by executing the following command:
 
 ```
