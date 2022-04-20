@@ -10,6 +10,8 @@ connex_app = config.connex_app
 
 connex_app.add_api("taxiAPI.yaml")
 
+connex_app.route("/health",methods=["GET"])
+
 connex_app.route("/provider",methods=["GET"])
 
 connex_app.route("/provider/{c_name}", methods=["GET", "DELETE"])
@@ -18,7 +20,6 @@ connex_app.route("/provider/pickUpDateTime/{start}/dropOffDateTime/{end}", metho
 
 connex_app.route("/provider/{record}", methods=["POST"])
 
-connex_app.route("/health",methods=["GET"])
 
 def serve():
 	interceptors = [ExceptionToStatusInterceptor()]

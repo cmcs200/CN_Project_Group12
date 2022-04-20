@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: provider
-        image: jrato/provider:latest
+        image: cmcs2/provider:latest
         ports:
         - containerPort: 8080
         livenessProbe:

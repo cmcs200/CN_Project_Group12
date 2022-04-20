@@ -36,12 +36,12 @@ Use the secret token that is on `kubernetes_deployment/secret_token.txt` to logi
 
 <br>
 
-### Promotheus: 
+### Prometheus: 
 
 <br>
 
-Promotheus is accessible on : 
- * http://localhost:31518/targets
+Prometheus is accessible on : 
+ * http://localhost:31218/targets
 
 <br>
 

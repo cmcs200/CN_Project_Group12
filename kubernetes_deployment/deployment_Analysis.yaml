@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: correlations
-        image: jrato/correlations:latest
+        image: cmcs2/correlations:latest
         ports:
         - containerPort: 8080
         resources:
@@ -84,7 +84,7 @@ spec:
     spec:
       containers:
       - name: analytics
-        image: jrato/analytics:latest
+        image: cmcs2/analytics:latest
         resources:
           requests:
             memory: "64Mi"
