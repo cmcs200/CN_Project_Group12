@@ -17,23 +17,31 @@ kubectl get secret $(kubectl get serviceaccount dashboard-admin-sa -o jsonpath="
 kubectl apply -f kubernetes_deployment/rbac.yaml --record
 kubectl apply -f kubernetes_deployment/mongo-secret.yaml --record
 kubectl apply -f kubernetes_deployment/persist-vol.yaml --record
-sleep 30
 kubectl apply -f kubernetes_deployment/pv-claim.yaml --record
-sleep 30
 kubectl apply -f kubernetes_deployment/deployment_DB.yaml --record
-sleep 30
 kubectl apply -f kubernetes_deployment/deployment_provider.yaml --record
-sleep 30
 kubectl apply -f kubernetes_deployment/deployment_Analysis.yaml --record
 kubectl apply -f kubernetes_deployment/ingress.yaml --record
 
-# access k8s-dashboard
-#echo "Access Kubernetes-Dashboard: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login"
-#kubectl proxy
+echo "
+Access Prometheus: http://localhost:8080
+"
+chmod +x kubernetes_deployment/prometheus-pf.sh &
+./kubernetes_deployment/prometheus-pf.sh &
 
 # databases ingestion in mongoDB
+sleep 120
 chmod +x kubernetes_deployment/mongo-data-ingestion.sh
 ./kubernetes_deployment/mongo-data-ingestion.sh
 
-echo "Kubernetes Configured Successfully!"
+echo "
+Kubernetes Configured Successfully! If there was an error in injection of the database, wait a few minutes and run ./kubernetes_deployment/mongo-data-ingestion.sh, please
+"
+
+# access k8s-dashboard
+echo "
+Access Kubernetes-Dashboard: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+"
+kubectl proxy
+&& fg
 
