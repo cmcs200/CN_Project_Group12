@@ -1,8 +1,0 @@
-to run locally:
-run database----> docker-compose up
-run server.py---> python3 server.py
-
-in a separate terminal we need to populate the db:
-docker exec -it CONTAINER_ID /bin/bash
-and give this command:
-mongoimport --db taxisdb --collection taxis --type csv --file home/data.csv --headerline
