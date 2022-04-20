@@ -24,6 +24,19 @@ $ ./deploy_kubernetes.sh
 
 <br>
 
+### How to access the services: 
+
+In order to access the services through a curl, an address is needed. You can get it by executing the following command:
+
+```
+kubectl describe ingress | grep -Po 'Address:\s\K.*' | tr -d " \t\r"
+```
+Then, you can start using the services, like on this example, replacing the address on this link:
+
+ * http://{address}/correlations/dateTime_distance
+ 
+<br>
+
 ### Kubernetes-Dashboard: 
 
 <br>
@@ -42,16 +55,3 @@ Use the secret token that is on `kubernetes_deployment/secret_token.txt` to logi
 
 Prometheus is accessible on : 
  * http://localhost:8080/targets
-
-<br>
-
-### How to access the services: 
-
-In order to access the services through a curl, an address is needed. You can get it by executing the following command:
-
-```
-kubectl describe ingress | grep -Po 'Address:\s\K.*' | tr -d " \t\r"
-```
-Then, you can start using the services, like on this example, replacing the address on this link:
-
- * http://{address}/correlations/dateTime_distance
