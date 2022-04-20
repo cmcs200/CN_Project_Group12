@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /provider
+        pathType: Prefix
+        backend:
+          service:
+            name: provider-s
+            port:
+              number: 8080  
+      - path: /correlations
+        pathType: Prefix
+        backend:
+          service:
+            name: correlations-s
+            port:
+              number: 8080   
+      - path: /analysis
+        pathType: Prefix
+        backend:
+          service:
+            name: analytics-s
+            port:
+              number: 8080

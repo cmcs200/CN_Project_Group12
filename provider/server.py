@@ -10,6 +10,8 @@ connex_app = config.connex_app
 
 connex_app.add_api("taxiAPI.yaml")
 
+connex_app.route("/health",methods=["GET"])
+
 connex_app.route("/provider",methods=["GET"])
 
 connex_app.route("/provider/{c_name}", methods=["GET", "DELETE"])
@@ -32,7 +34,7 @@ def serve():
 	server.wait_for_termination()
 
 def run_clientAPI():
-	connex_app.run(debug=True, host='0.0.0.0',use_reloader=False)
+	connex_app.run(debug=True, host='0.0.0.0', port=8080,use_reloader=False)
 
 if __name__ == '__main__':
 	try:
@@ -44,7 +46,3 @@ if __name__ == '__main__':
 		clientAPIT.join()
 	except:
 		print("Error: unable to start thread")
-	
-	
-
-	

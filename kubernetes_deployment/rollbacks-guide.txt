@@ -1,0 +1,12 @@
+# save revisions with --record flag
+kubectl apply -f deployment_provider.yaml --record
+
+# check revisions history
+$ kubectl rollout history deployment/provider
+REVISION  CHANGE-CAUSE
+1         kubectl apply -f deployment_provider.yaml --record
+2         kubectl apply -f deployment_provider.yaml --record
+3         kubectl apply -f deployment_provider.yaml --record
+
+# rollback to revision 2
+$ kubectl rollout undo deployment/provider --to-revision=2

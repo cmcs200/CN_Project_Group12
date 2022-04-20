@@ -13,7 +13,8 @@ connex_app = connexion.App(__name__,specification_dir=basedir)
 app = connex_app.app
 
 
-app.config["MONGO_URI"] = "mongodb://mongo_taxi:27017/taxisdb"
-mongodb_client = PyMongo(app)
-db = mongodb_client.db
+app.config["MONGO_URI"] = "mongodb://grupo12:kubernetes@deployment/mongo-taxi:27017/taxisdb?authSource=admin"
+uri = "mongodb://grupo12:kubernetes@mongo-s:27017/taxisdb?authSource=admin"
+client = MongoClient(uri)
+db = MongoClient(uri).get_database()
 

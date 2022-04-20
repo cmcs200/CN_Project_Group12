@@ -11,9 +11,13 @@ from messages_pb2 import ClientRequest
 from messages_pb2_grpc import ClientProviderRequestStub
 import grpc
 
-messages_channel = grpc.insecure_channel("server:50051")
+messages_channel = grpc.insecure_channel("provider-s:50051")
 messages_client = ClientProviderRequestStub(messages_channel)
 
+
+
+def health():
+	return 200
 
 def continouousAnalytics(p_id,c_name):
     if((p_id==1 or p_id==2) and c_name in ["passenger_count","trip_distance","fare_amount", "extra", "tip_amount", "tolls_amount","total_amount"]):
