@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: correlations
-        image: cmcs2/correlations:latest
+        image: europe-west3-docker.pkg.dev/fcul123/cn-repo/correlations:latest
         ports:
         - containerPort: 8080
         resources:
@@ -84,7 +84,7 @@ spec:
     spec:
       containers:
       - name: analytics
-        image: cmcs2/analytics:latest
+        image: europe-west3-docker.pkg.dev/fcul123/cn-repo/analytics:latest
         resources:
           requests:
             memory: "64Mi"
