@@ -27,13 +27,13 @@ kubectl apply -f kubernetes_deployment/grafana.yaml --record
 echo "
 Access Prometheus: http://localhost:8080
 "
-chmod +x kubernetes_deployment/prometheus-pf.sh &
+chmod +x ./kubernetes_deployment/prometheus-pf.sh &
 ./kubernetes_deployment/prometheus-pf.sh &
 
 echo "
 Or you can use Grafana at: http://localhost:8081
 "
-chmod +x kubernetes_deployment/grafana-pf.sh &
+chmod +x ./kubernetes_deployment/grafana-pf.sh &
 ./kubernetes_deployment/grafana-pf.sh &
 
 # databases ingestion in mongoDB
