@@ -22,12 +22,19 @@ kubectl apply -f kubernetes_deployment/deployment_DB.yaml --record
 kubectl apply -f kubernetes_deployment/deployment_provider.yaml --record
 kubectl apply -f kubernetes_deployment/deployment_Analysis.yaml --record
 kubectl apply -f kubernetes_deployment/ingress.yaml --record
+kubectl apply -f kubernetes_deployment/grafana.yaml --record
 
 echo "
 Access Prometheus: http://localhost:8080
 "
 chmod +x kubernetes_deployment/prometheus-pf.sh &
 ./kubernetes_deployment/prometheus-pf.sh &
+
+echo "
+Or you can use Grafana at: http://localhost:8081
+"
+chmod +x kubernetes_deployment/grafana-pf.sh &
+./kubernetes_deployment/grafana-pf.sh &
 
 # databases ingestion in mongoDB
 sleep 120
