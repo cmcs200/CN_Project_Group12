@@ -31,10 +31,23 @@ In order to access the services through a curl, an address is needed. You can ge
 ```
 kubectl describe ingress | grep -Po 'Address:\s\K.*' | tr -d " \t\r"
 ```
-Then, you can start using the services, like on this example, replacing the address on this link:
+Then, you can start using the services. Replacing the {address} on the links bellow, its possible to gain access to the services:
 
- * http://{address}/correlations/dateTime_distance
+<br>
+
+#### Provider:
+ * http://{address}/provider
+ * http://{address}/provider/{c_name}
+ * http://{address}/provider/pickUpDateTime/{start}/dropOffDateTime/{end}
+ * http://{address}/provider/{record}
  
+ <br>
+ 
+#### Statistics and Analytics:
+ 
+ * http://{address}/analysis/provider/{p_id}/analytics/{c_name}
+ * http://{address}/analysis/provider/{p_id}/stats/{c_name}
+ * 
 <br>
 
 ### Kubernetes-Dashboard: 
