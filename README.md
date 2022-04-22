@@ -47,7 +47,18 @@ Then, you can start using the services. Replacing the {address} on the links bel
  
  * http://{address}/analysis/provider/{p_id}/analytics/{c_name}
  * http://{address}/analysis/provider/{p_id}/stats/{c_name}
- * 
+ 
+<br>
+
+#### Correlations:
+
+ * http://{address}/correlations/dateTime_distance
+ * http://{address}/correlations/paymentType_tip
+ * http://{address}/correlations/paymentType_totalAmmount
+ * http://{address}/correlations/dateTime_paymentType
+ * http://{address}/correlations/totalAmmount_tip
+ * http://{address}/correlations/tripDistance_tip
+
 <br>
 
 ### Kubernetes-Dashboard: 
