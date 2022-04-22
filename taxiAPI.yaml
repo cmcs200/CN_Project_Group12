@@ -198,86 +198,17 @@ paths:
           default:
             description: unexpected error
 
-  /analysis/provider/{p_id}/analytics/{c_name}:
+  /health:
     get:
-      operationId: stats.continouousAnalytics
       tags:
-        - Provider Analytics
-      summary: Busyness analytics about one provider dados continuos
-      description: Busyness analytics such as mean,mode,median,standard-deviation applied to the collumns chosen by the user (only continuous data).
-      parameters:
-        - name: p_id
-          in: path
-          description: "id of the provider"
-          schema:
-           type: integer
-          required: True
-        - name: c_name
-          in: path
-          description: name of the feature to analyse
-          schema:
-            type: string
-          required: True
+      - health
+      summary: "get health"
+      operationId: stats.health
       responses:
-        '200':
-          description: Successfully analysis 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  f_name:
-                    type: string
-                  media:
-                    type: number
-                  mediana:
-                    type: number
-                  moda:
-                    type: number
-                  standard_deviation:
-                    type: object
-                  
-        400:
-          description: Bad request provider id must be an integer either 1 or 2.     
-        404:
-          description: The specified feature for analysis was not found 
-          
-  /analysis/provider/{p_id}/stats/{c_name}:
-    get:
-      operationId: stats.categoricalAnalytics
-      tags:
-        - Provider Analytics
-      summary: Busyness analytics about one provider for categorical data
-      description: Statistics such sum of the values
-      parameters:
-        - name: p_id
-          in: path
-          description: id of the provider
-          schema:
-            type: integer
-          required: True
-        - name: c_name
-          in: path
-          description: name of the feature to analyse
-          schema:
-            type: string
-          required: True
-      responses:
-        200:
-          description: Successfully analysis 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  c_name:
-                    type: string
-                  sum:
-                    type: number
-        400:
-          description: Bad request provider id must be an integer either 1 or 2.     
-        404:
-          description: The specified feature for analysis was not found 
+        "200":
+          description: Successful response                
+        "404":
+          description: Not found response
           
   /analysis/provider/{p_id}/analytics/{c_name}:
     get:
@@ -359,8 +290,217 @@ paths:
           description: Bad request provider id must be an integer either 1 or 2.     
         404:
           description: The specified feature for analysis was not found 
+          
+  /health:
+    get:
+      tags:
+      - health
+      summary: "get health"
+      operationId: correlations.health
+      responses:
+        "200":
+          description: Successful response                
+        "404":
+          description: Not found response  
 
-
+  /correlations/dateTime_distance:
+    get:
+      operationId: correlations.correlation_dateTime_distance
+      tags:
+        - Correlation Analysis
+      summary: "Get the result of a correlation analysis: datetime_distance" 
+      description: "Get the result of a correlation analysis between #tpep_pickup_datetime vs #trip_distance columns from the dataset."
+      responses:
+        "200":
+          description: Successful response, the first value should be a DateTime and the second value the average distance at that hour.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/paymentType_tip:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Establish the level of correlation between Payment Type and Tip"
+      description: "For each payment type retrieves the average  tip amount in dollars"
+      operationId: correlations.correlation_payment_type_tip
+      responses:
+        "200":
+          description: Successful response, the first value should be a payment type and the second value the correspondant tip value.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/paymentType_totalAmmount:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Establish the level of correlation between Payment Type and Payment Amount"
+      description: "For each payment type retrieves the average  payment amount in dollars"
+      operationId: correlations.correlation_payment_type_total_amount
+      responses:
+        "200":
+          description: Successful response, the first value should be a payment type and the second value the average amount of that payment.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/dateTime_paymentType:
+    get:
+      operationId: correlations.correlation_dateTime_payment_type
+      tags:
+      - Correlation Analysis
+      summary: "Get the result of a correlation analysis: dateTime_paymentType"
+      description: "Get the result of a correlation analysis: between #tpep_pickup_datetime vs #payment_type from the dataset."
+      responses:
+        "200":
+          description: Successful response, the first value should be a DateTime and the second value the most used payment type at that hour.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/totalAmmount_tip:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Get the result of a correlation analysis: tip_totalAmmount"
+      description: "Get the result of a correlation analysis between #tip_amount vs #total_amount columns from the dataset."
+      operationId: correlations.correlation_totalAmmount_tip
+      responses:
+        "200":
+          description: Successful response, the first value should be the total ammount and the second value the average tip for that amount.
+          content:
+            application/json:
+               schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'           
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
+  /correlations/tripDistance_tip:
+    get:
+      tags:
+      - Correlation Analysis
+      summary: "Establish the level of correlation between Trip Distance and Tip"
+      description: "Gives a list of trip distance normal values and the average/predicted tip amount in dollars"
+      operationId: correlations.correlation_tripDistance_tip
+      responses:
+        "200":
+          description: Successful response, the first value should be an example of trip distance and the second value the correspondant tip value.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Correlation'
+        "404":
+          description: Not found method
+          content:
+            text/plain:
+              schema:
+                title: Method not found
+                type: string
+                example: Not found
+        "500":
+          description: Internal Server Error-no data
+          content:
+            text/plain:
+              schema:
+                title: No data/correlation available
+                type: string
+                example: No data/correlation available
+                
 components:
   schemas:
   
