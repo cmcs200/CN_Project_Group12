@@ -24,14 +24,15 @@ kubectl apply -f kubernetes_deployment/deployment_Analysis.yaml --record
 kubectl apply -f kubernetes_deployment/ingress.yaml --record
 kubectl apply -f kubernetes_deployment/grafana.yaml --record
 sleep 30
+PNAME=$(kubectl describe ingress | grep -Po 'Address:\s\K.*' | tr -d " \t\n\r")
 echo "
-Access Prometheus: http://localhost:8080
+Access Prometheus: http://${PNAME}:8080
 "
 chmod +x ./kubernetes_deployment/prometheus-pf.sh &
 ./kubernetes_deployment/prometheus-pf.sh &
 
 echo "
-Or you can use Grafana at: http://localhost:8081
+Or you can use Grafana at: http://${PNAME}:8081
 "
 chmod +x ./kubernetes_deployment/grafana-pf.sh &
 ./kubernetes_deployment/grafana-pf.sh &
@@ -47,7 +48,7 @@ Kubernetes Configured Successfully! If there was an error in injection of the da
 
 # access k8s-dashboard
 echo "
-Access Kubernetes-Dashboard: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+Access Kubernetes-Dashboard: http://${PNAME}:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 "
 kubectl proxy
 && fg
