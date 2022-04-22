@@ -44,12 +44,14 @@ Then, you can start using the services, like on this example, replacing the addr
  * http://{address}/provider/pickUpDateTime/{start}/dropOffDateTime/{end}
  * http://{address}/provider/{record}
  
- 
+<br>
+
 #### Statistics and Analytics:
  
  * http://{address}/analysis/provider/{p_id}/analytics/{c_name}
  * http://{address}/analysis/provider/{p_id}/stats/{c_name}
  
+<br>
 
 #### Correlations:
 
