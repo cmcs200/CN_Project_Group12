@@ -23,7 +23,7 @@ kubectl apply -f kubernetes_deployment/deployment_provider.yaml --record
 kubectl apply -f kubernetes_deployment/deployment_Analysis.yaml --record
 kubectl apply -f kubernetes_deployment/ingress.yaml --record
 kubectl apply -f kubernetes_deployment/grafana.yaml --record
-
+sleep 30
 echo "
 Access Prometheus: http://localhost:8080
 "
@@ -36,19 +36,19 @@ Or you can use Grafana at: http://localhost:8081
 chmod +x ./kubernetes_deployment/grafana-pf.sh &
 ./kubernetes_deployment/grafana-pf.sh &
 
-# access k8s-dashboard
-echo "
-Access Kubernetes-Dashboard: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
-"
-kubectl proxy &
-
 # databases ingestion in mongoDB
-sleep 120
-chmod +x kubernetes_deployment/mongo-data-ingestion.sh 
-./kubernetes_deployment/mongo-data-ingestion.sh 
+sleep 60
+chmod +x kubernetes_deployment/mongo-data-ingestion.sh
+./kubernetes_deployment/mongo-data-ingestion.sh
 
 echo "
 Kubernetes Configured Successfully! If there was an error in injection of the database, wait a few minutes and run ./kubernetes_deployment/mongo-data-ingestion.sh, please
 "
+
+# access k8s-dashboard
+echo "
+Access Kubernetes-Dashboard: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
+"
+kubectl proxy
 && fg
 
