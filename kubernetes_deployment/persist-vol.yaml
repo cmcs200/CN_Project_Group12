@@ -9,4 +9,4 @@ spec:
   accessModes:
     - ReadWriteOnce #type of access
   hostPath:
-    path: "/mnt/data" 
+    path: "/var/lib/data" 

@@ -1,6 +1,5 @@
 #!/bin/sh
 
-alias kubectl="minikube kubectl --"
 
 openssl genrsa -out group12-man.key 2048
 
