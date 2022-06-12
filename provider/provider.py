@@ -1,6 +1,6 @@
 from dataclasses import replace
 import string
-from config import db
+from config import db, db_ptt, db_tt
 import pymongo
 import os
 import connexion
@@ -12,6 +12,7 @@ from bson import json_util
 from flask_pymongo import PyMongo
 from flask import request
 from datetime import datetime
+import numpy as np
 
 def health():
 	return 200
@@ -100,7 +101,12 @@ class ColumnsServicer(messages_pb2_grpc.ClientProviderRequestServicer):
 		colsDict={}
 		for col in columns:
 			colsDict[col]=1
-		return messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000))))
+		saga(messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000)))), 
+		messages_pb2.ClientResponse(response=json_util.dumps(list(np.concatenate(db_ptt.taxis.find({},colsDict).limit(5000)), db_tt.taxis.find({},colsDict).limit(5000), axis=1)))
+		)
 
-
- 
+def saga(operation, compensation):
+	try:
+		return operation
+	except: 
+		return compensation      

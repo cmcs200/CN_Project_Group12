@@ -10,3 +10,33 @@ spec:
     - ReadWriteOnce #type of access
   hostPath:
     path: "/mnt/data" 
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-data-ptt-pv 
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi #Size of the volume
+  accessModes:
+    - ReadWriteOnce #type of access
+  hostPath:
+    path: "/mnt/data" 
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mongo-data-tt-pv  
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi #Size of the volume
+  accessModes:
+    - ReadWriteOnce #type of access
+  hostPath:
+    path: "/mnt/data" 

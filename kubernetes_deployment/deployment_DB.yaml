@@ -80,3 +80,173 @@ spec:
       protocol: TCP
       port: 27017
       targetPort: 27017
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mongo-taxi-ptt
+  name: mongo-taxi-ptt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-taxi-ptt
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mongo-taxi-ptt
+    spec:
+      containers:
+      - image: mongo:latest
+        name: mongo-taxi-ptt
+        args: ["--dbpath","/data/db"]
+        ports:
+        - containerPort: 27018
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-taxi-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-taxi-secret
+              key: mongo-root-password
+        livenessProbe:
+          exec:
+            command:
+              - mongo
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+              - mongo
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        volumeMounts:
+        - name: "mongo-data-dir"
+          mountPath: "/data/db"
+      volumes:
+      - name: "mongo-data-dir"
+        persistentVolumeClaim:
+          claimName: mongo-data-ptt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-ptt-s
+  labels:
+    app: mongo-ptt-s
+spec:
+  selector:
+    app: mongo-taxi-ptt
+  ports:
+    - name: http
+      protocol: TCP
+      port: 27018
+      targetPort: 27018
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: mongo-taxi-tt
+  name: mongo-taxi-tt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-taxi-tt
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mongo-taxi-tt
+    spec:
+      containers:
+      - image: mongo:latest
+        name: mongo-taxi-tt
+        args: ["--dbpath","/data/db"]
+        ports:
+        - containerPort: 27019
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-taxi-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-taxi-secret
+              key: mongo-root-password
+        livenessProbe:
+          exec:
+            command:
+              - mongo
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        readinessProbe:
+          exec:
+            command:
+              - mongo
+              - --disableImplicitSessions
+              - --eval
+              - "db.adminCommand('ping')"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        volumeMounts:
+        - name: "mongo-data-dir"
+          mountPath: "/data/db"
+      volumes:
+      - name: "mongo-data-dir"
+        persistentVolumeClaim:
+          claimName: mongo-data-tt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-tt-s
+  labels:
+    app: mongo-tt-s
+spec:
+  selector:
+    app: mongo-taxi-tt
+  ports:
+    - name: http
+      protocol: TCP
+      port: 27019
+      targetPort: 27019
