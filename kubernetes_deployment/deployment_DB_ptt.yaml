@@ -3,24 +3,24 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: mongo-taxi
-  name: mongo-taxi
+    app: mongo-taxi-ptt
+  name: mongo-taxi-ptt
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo-taxi
+      app: mongo-taxi-ptt
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: mongo-taxi
+        app: mongo-taxi-ptt
     spec:
       containers:
       - image: mongo:latest
-        name: mongo-taxi
-        command: ["/bin/sh", "-c", "mkdir -p mnt/data | chmod +x -R mnt | mongod --dbpath /mnt/data"]
+        name: mongo-taxi-ptt
+        command: ["/bin/sh", "-c", "mkdir -p mnt/ptt | chmod +x -R mnt | mongod --dbpath /mnt/ptt"]
         ports:
         - containerPort: 27017
         env:
@@ -34,6 +34,7 @@ spec:
             secretKeyRef:
               name: mongo-taxi-secret
               key: mongo-root-password
+                
         livenessProbe:
           exec:
             command:
@@ -59,22 +60,23 @@ spec:
           successThreshold: 1
           failureThreshold: 6
         volumeMounts:
-        - name: "mongo-data-dir"
-          mountPath: "/mnt/data"
+        - name: "mongo-data-dir-ptt"
+          mountPath: "/mnt/ptt"
       volumes:
-      - name: "mongo-data-dir"
+      - name: "mongo-data-dir-ptt"
         persistentVolumeClaim:
-          claimName: mongo-data
+          claimName: mongo-data-ptt
+      
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-s
+  name: mongo-ptt-s
   labels:
-    app: mongo-s
+    app: mongo-ptt-s
 spec:
   selector:
-    app: mongo-taxi
+    app: mongo-taxi-ptt
   ports:
     - name: http
       protocol: TCP

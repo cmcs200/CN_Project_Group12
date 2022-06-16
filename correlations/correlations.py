@@ -162,7 +162,7 @@ def correlation_tripDistance_tip():
     return getPValueAnswer(p_value,"trip_distance", "tip_amount")
 
 
-
+@db_breaker
 def callDB(column1,column2):
     listDB=json.loads(messages_client.DBMakeRequest(ClientRequest(request=[column1,column2])).response)
     return pd.DataFrame(listDB)

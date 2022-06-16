@@ -75,6 +75,7 @@ def categoricalAnalytics(p_id,c_name):
         return json.dumps(dictionary),200
     pass
 
+@db_breaker
 def callDB(column):
     listDB=json.loads(messages_client.DBMakeRequest(ClientRequest(request=["VendorID",column])).response)
     return pd.DataFrame(listDB)
