@@ -7,27 +7,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-# This workflow uses actions that are not certified by GitHub.
-# São fornecidas por terceiros e regidas por
-# termos de serviço, política de privacidade e suporte separados
-# documentação.
-
-name: Publish Docker image
-
-on:
-  release:
-    types: [published]
-
-jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
