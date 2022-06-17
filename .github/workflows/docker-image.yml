@@ -22,19 +22,19 @@ jobs:
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
 
       - name: Build the Docker image provider
-        run: docker build ./provider --file Dockerfile --tag $DOCKER_USER/provider:latest
+        run: docker build ./provider --file Dockerfile --tag ${{secrets.DOCKER_USER}}/provider:latest
       
       - name: Docker Push provider
-        run: docker push $DOCKER_USER/provider
+        run: docker push ${{secrets.DOCKER_USER}}/provider
       
       - name: Build the Docker image correlations
-        run: docker build ./correlations --file Dockerfile --tag $DOCKER_USER/correlations:latest
+        run: docker build ./correlations --file Dockerfile --tag ${{secrets.DOCKER_USER}}/correlations:latest
       
       - name: Docker Push correlations
-        run: docker push $DOCKER_USER/correlations
+        run: docker push ${{secrets.DOCKER_USER}}/correlations
       
       - name: Build the Docker image analytics
-        run: docker build ./analytics_stats --file Dockerfile --tag $DOCKER_USER/analytics:latest
+        run: docker build ./analytics_stats --file Dockerfile --tag ${{secrets.DOCKER_USER}}/analytics:latest
       
       - name: Docker Push analytics
-        run: docker push $DOCKER_USER/analytics
+        run: docker push ${{secrets.DOCKER_USER}}/analytics
