@@ -34,7 +34,7 @@ jobs:
         run: docker push ${{secrets.DOCKER_USER}}/correlations
       
       - name: Build the Docker image analytics
-        run: docker build ./analytics_stats -t --tag ${{secrets.DOCKER_USER}}/analytics:latest
+        run: docker build ./analytics_stats -t ${{secrets.DOCKER_USER}}/analytics:latest
       
       - name: Docker Push analytics
         run: docker push ${{secrets.DOCKER_USER}}/analytics
