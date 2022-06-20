@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: provider
-        image: ray2g/provider_saga:latest
+        image: cmcs2/provider:latest
         ports:
         - containerPort: 8080
         livenessProbe:

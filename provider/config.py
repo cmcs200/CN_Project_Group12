@@ -18,13 +18,13 @@ uri = "mongodb://grupo12:kubernetes@mongo-s:27017/taxisdb?authSource=admin"
 client = MongoClient(uri)
 db = MongoClient(uri).get_database()
 
-app.config["MONGO_URI_ptt"] = "mongodb://grupo12:kubernetes@deployment/mongo-taxi-ptt:27018/taxisdb?authSource=admin"
-uri_ptt = "mongodb://grupo12:kubernetes@mongo-ptt-s:27018/taxisdb?authSource=admin"
+app.config["MONGO_URI_ptt"] = "mongodb://grupo12:kubernetes@deployment/mongo-taxi-ptt:27017/taxisdb?authSource=admin"
+uri_ptt = "mongodb://grupo12:kubernetes@mongo-ptt-s:27017/taxisdb?authSource=admin"
 client_ptt = MongoClient(uri_ptt)
 db_ptt = MongoClient(uri_ptt).get_database()
 
-app.config["MONGO_URI_tt"] = "mongodb://grupo12:kubernetes@deployment/mongo-taxi-tt:27019/taxisdb?authSource=admin"
-uri_tt = "mongodb://grupo12:kubernetes@mongo-tt-s:27019/taxisdb?authSource=admin"
+app.config["MONGO_URI_tt"] = "mongodb://grupo12:kubernetes@deployment/mongo-taxi-tt:27017/taxisdb?authSource=admin"
+uri_tt = "mongodb://grupo12:kubernetes@mongo-tt-s:27017/taxisdb?authSource=admin"
 client_tt = MongoClient(uri_tt)
 db_tt = MongoClient(uri_tt).get_database()
 

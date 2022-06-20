@@ -2,8 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: 34.111.88.43
 spec:
-  ingressClassName: nginx
   rules:
   - http:
       paths:
