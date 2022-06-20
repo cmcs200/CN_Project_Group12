@@ -13,7 +13,7 @@ import grpc
 
 messages_channel = grpc.insecure_channel("provider-s:50051")
 messages_client = ClientProviderRequestStub(messages_channel)
-
+db_breaker=pybreaker.CircuitBreaker(fail_max=2, reset_timeout=60)
 
 
 def health():
