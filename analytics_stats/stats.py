@@ -10,6 +10,7 @@ import numpy as np
 from messages_pb2 import ClientRequest
 from messages_pb2_grpc import ClientProviderRequestStub
 import grpc
+import pybreaker
 
 messages_channel = grpc.insecure_channel("provider-s:50051")
 messages_client = ClientProviderRequestStub(messages_channel)
