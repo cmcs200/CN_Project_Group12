@@ -9,3 +9,4 @@ flask_pymongo
 grpcio
 grpcio-tools
 grpc_interceptor
+pybreaker

@@ -1,5 +1,5 @@
 #!/bin/sh
-alias kubectl="minikube kubectl --"
+#alias kubectl="minikube kubectl --"
 # get mongo taxi pod name
 PNAME1=$(kubectl get pods --template '{{range .items}}{{.metadata.name}}{{end}}' --selector=app=mongo-taxi)
 PNAME2=$(kubectl get pods --template '{{range .items}}{{.metadata.name}}{{end}}' --selector=app=mongo-taxi-ptt)
