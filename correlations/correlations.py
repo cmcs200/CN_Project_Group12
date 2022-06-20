@@ -10,9 +10,11 @@ from sklearn.preprocessing import LabelEncoder
 from scipy.stats import f_oneway
 from messages_pb2 import ClientRequest
 from messages_pb2_grpc import ClientProviderRequestStub
+import pybreaker
 
 messages_channel = grpc.insecure_channel("provider-s:50051")
 messages_client = ClientProviderRequestStub(messages_channel)
+db_breaker=pybreaker.CircuitBreaker(fail_max=2, reset_timeout=60)
 
 def health():
 	return 200
