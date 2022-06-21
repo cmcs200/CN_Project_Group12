@@ -103,9 +103,7 @@ class ColumnsServicer(messages_pb2_grpc.ClientProviderRequestServicer):
 		for col in columns:
 			colsDict[col]=1
 		#return messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000))))
-		return saga(messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000)))), 
-		messages_pb2.ClientResponse(response=json_util.dumps(list(np.concatenate(db_ptt.taxis.find({},colsDict).limit(5000)), db_tt.taxis.find({},colsDict).limit(5000), axis=1)))
-		)
+		return messages_pb2.ClientResponse(response=json_util.dumps(list(saga(db.taxis.find({},colsDict).limit(5000))), np.concatenate(db_ptt.taxis.find({},colsDict).limit(5000)), db_tt.taxis.find({},colsDict).limit(5000), axis=1))		
 
 def saga(operation, compensation):
 	try:
