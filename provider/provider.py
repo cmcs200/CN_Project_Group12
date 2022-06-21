@@ -14,6 +14,7 @@ from flask import request
 from datetime import datetime
 import numpy as np
 import grpc
+colsDict={}
 
 def health():
 	return 200
@@ -97,14 +98,19 @@ def add_record(record):
 	return json.loads(json_util.dumps("Request was unsuccessful"))
 
 class ColumnsServicer(messages_pb2_grpc.ClientProviderRequestServicer):
+	
 	def DBMakeRequest(self, request, context):
 		columns=request.request
-		colsDict={}
 		for col in columns:
 			colsDict[col]=1
 		#return messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000))))
-		return messages_pb2.ClientResponse(response=json_util.dumps(list(saga(db.taxis.find({},colsDict).limit(5000), np.concatenate(db_ptt.taxis.find({},colsDict).limit(5000), db_tt.taxis.find({},colsDict).limit(5000), axis=1)))))
-		
+		return messages_pb2.ClientResponse(response=json_util.dumps(list(saga(saga_op, saga_op1))))
+
+def saga_op():
+    return db.taxis.find({},colsDict).limit(5000)
+
+def saga_op1():
+	return np.concatenate(db_ptt.taxis.find({},colsDict).limit(5000), db_tt.taxis.find({},colsDict).limit(5000), axis=1 )
 
 def saga(operation, compensation):
 	try:
