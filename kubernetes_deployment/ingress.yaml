@@ -3,7 +3,8 @@ kind: Ingress
 metadata:
   name: nginx-ingress
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: 34.111.88.43
+    kubernetes.io/ingress.allow-http: "true"
+    kubernetes.io/ingress.global-static-ip-name: cn-deploy
 spec:
   rules:
   - http:

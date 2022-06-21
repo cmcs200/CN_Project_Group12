@@ -20,7 +20,7 @@ spec:
       containers:
       - image: mongo:latest
         name: mongo-taxi-tt
-        command: ["/bin/sh", "-c", "mkdir -p mnt/tt | chmod +x -R mnt | mongod --dbpath /mnt/tt"]
+        args: ["--dbpath","/data/db"]
         ports:
         - containerPort: 27017
         env:
@@ -60,7 +60,7 @@ spec:
           failureThreshold: 6
         volumeMounts:
         - name: "mongo-data-dir-tt"
-          mountPath: "/mnt/tt"
+          mountPath: "/mnt/data"
       volumes:
       - name: "mongo-data-dir-tt"
         persistentVolumeClaim:

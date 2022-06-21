@@ -10,11 +10,11 @@ PIPPTT=$(kubectl describe svc mongo-ptt-s | grep -Po 'Endpoints:\s\K.*' | tr -d 
 
 # copy yellow_tripdata_2016-03.csv to mongo taxi pod
 kubectl cp database/import.sh ${PNAME1}:/home/import.sh
-kubectl cp database/import_data_ptt_saga.sh ${PNAME2}:/home/import.sh
-kubectl cp database/import_data_tt_saga.sh ${PNAME3}:/home/import.sh
+kubectl cp database/import.sh ${PNAME2}:/home/import.sh
+kubectl cp database/import.sh ${PNAME3}:/home/import.sh
 kubectl cp database/yellow_tripdata_2016-03.csv ${PNAME1}:/home/data.csv
-kubectl cp database/data_payType_totalAmount_tripDistance.csv ${PNAME2}:/home/data_ptt.csv
-kubectl cp database/data_tpep_tipAmount.csv ${PNAME3}:/home/data_tt.csv
+kubectl cp database/data_payType_totalAmount_tripDistance.csv ${PNAME2}:/home/data.csv
+kubectl cp database/data_tpep_tipAmount.csv ${PNAME3}:/home/data.csv
 
 # import data into taxisdb
 kubectl exec deployment/mongo-taxi -it -- /bin/bash -c "chmod +x ./home/import.sh && ./home/import.sh ${PIP}" 

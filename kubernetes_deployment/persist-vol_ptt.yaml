@@ -9,4 +9,4 @@ spec:
   accessModes:
     - ReadWriteOnce #type of access
   hostPath:
-    path: "/mnt/ptt" 
+    path: "/mnt/data" 
