@@ -103,7 +103,6 @@ class ColumnsServicer(messages_pb2_grpc.ClientProviderRequestServicer):
 		columns=request.request
 		for col in columns:
 			colsDict[col]=1
-		#return messages_pb2.ClientResponse(response=json_util.dumps(list(db.taxis.find({},colsDict).limit(5000))))
 		return messages_pb2.ClientResponse(response=json_util.dumps(list(saga(saga_op, saga_op1))))
 
 def saga_op():

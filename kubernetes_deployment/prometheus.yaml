@@ -40,7 +40,7 @@ kind: Service
 metadata:
   name: prometheus-svc
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: prometheus
   ports:

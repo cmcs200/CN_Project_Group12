@@ -29,19 +29,6 @@ kubectl apply -f kubernetes_deployment/deployment_provider.yaml --record
 kubectl apply -f kubernetes_deployment/deployment_Analysis.yaml --record
 kubectl apply -f kubernetes_deployment/ingress.yaml --record
 kubectl apply -f kubernetes_deployment/grafana.yaml --record
-sleep 30
-PNAME=$(kubectl describe ingress | grep -Po 'Address:\s\K.*' | tr -d " \t\n\r")
-echo "
-Access Prometheus: http://${PNAME}:8080
-"
-chmod +x ./kubernetes_deployment/prometheus-pf.sh &
-./kubernetes_deployment/prometheus-pf.sh &
-
-echo "
-Or you can use Grafana at: http://${PNAME}:8081
-"
-chmod +x ./kubernetes_deployment/grafana-pf.sh &
-./kubernetes_deployment/grafana-pf.sh &
 
 # databases ingestion in mongoDB
 sleep 60
