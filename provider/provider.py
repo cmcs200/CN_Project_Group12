@@ -114,6 +114,6 @@ def saga_op1():
 
 def saga(operation, compensation):
 	try:
-		return operation
-	except grpc.StatusCode.UNKNOWN: 
-		return compensation
+		return operation()
+	except: 
+		return compensation()
